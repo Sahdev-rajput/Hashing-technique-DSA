@@ -1,0 +1,23 @@
+void linear_probing(int H[], int key)
+{
+	int hash = hash_function(key);
+	if (hash != 0)
+	{
+		hash = probe(H, key);
+	}
+	H[hash] = key;
+}
+bool Search(int H[], int key)
+{
+	int hash = hash_function(key);
+	int i = 0;
+	while (H[(hash + i) % 10] != 0)
+	{
+		if (H[(hash + i) % 10] == key)
+		{
+			return true;
+		}
+		i++;
+	}
+	return false;
+}
