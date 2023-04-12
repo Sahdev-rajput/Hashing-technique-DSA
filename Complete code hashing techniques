@@ -1,0 +1,129 @@
+#include <iostream>
+using namespace std;
+struct node
+{
+	int data;
+	struct node* next;
+};
+void Inserted_Sorted(struct node** H, int x)
+{
+	struct node* t, * q = NULL, * p = *H;
+
+	t = (struct node*)malloc(sizeof(struct node));
+	t->data = x;
+	t->next = NULL;
+
+	if (*H == NULL)
+		*H = t;
+	else
+	{
+		while (p && p->data < x)
+		{
+			q = p;
+			p = p->next;
+		}
+		if (p == *H)
+		{
+			t->next = *H;
+			*H = t;
+		}
+		else
+		{
+			t->next = q->next;
+			q->next = t;
+		}
+	}
+}
+int hash_function(int x)
+{
+	return x % 10;
+}
+struct node* Search_in_Sorted_list(struct node* p, int val)
+{
+	struct node* q = p;
+	while (q && q->data <= val)
+	{
+		if (q->data == val)
+		{
+			return q;
+		}
+		q = q->next;
+	}
+	return NULL;
+}
+void Chaining(struct node *H[],int A[],int n)
+{
+	int index;
+	for (int i = 0; i < n; i++)
+	{
+		index = hash_function(A[i]);
+		Inserted_Sorted(&H[index], A[i]);
+	}
+}
+int probe(int H[], int key)
+{
+	int i = 0;
+	int index = hash_function(key);
+	while (H[(index + i) % 10] != 0)
+	{
+		i++;
+	}
+	return ((index + i) % 10);
+}
+void linear_probing(int H[], int key)
+{
+	int hash = hash_function(key);
+	if (hash != 0)
+	{
+		hash = probe(H, key);
+	}
+	H[hash] = key;
+}
+bool Search(int H[], int key)
+{
+	int hash = hash_function(key);
+	int i = 0;
+	while (H[(hash + i) % 10] != 0)
+	{
+		if (H[(hash + i) % 10] == key)
+		{
+			return true;
+		}
+		i++;
+	}
+	return false;
+}
+int main()
+{
+	/*struct node* H[10];
+	for (int i = 0; i < 10; i++)
+	{
+		H[i] = NULL;
+	}*/
+	/*int A[10] = {12,13,16,343,31,13,37,3,1,36};
+	Chaining(H,A, 10);
+	struct node* hey;
+	hey = Search_in_Sorted_list(H[hash_function(30)],30);
+	if (hey == NULL)
+	{
+		cout << "Key is not found";
+	}
+	else
+	{
+		cout << "Key is found " << hey->data;
+	}*/
+	int H[10] = { 0 };
+	linear_probing(H, 23);
+	linear_probing(H, 13);
+	linear_probing(H, 3);
+	linear_probing(H, 25);
+	if (Search(H, 33))
+	{
+		cout << "Key is Found " << endl;
+	}
+	else
+	{
+		cout << "Key is not found" << endl;
+	}
+
+}
