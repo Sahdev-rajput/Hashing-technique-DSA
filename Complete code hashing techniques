@@ -1,3 +1,4 @@
+//Hashing technique
 #include <iostream>
 using namespace std;
 struct node
